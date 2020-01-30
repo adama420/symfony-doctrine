@@ -36,6 +36,24 @@ class ProductController extends AbstractController
 
         ]);
     }
+
+
+    /**
+     * @Route("/products", name="product_list")
+     */
+    public function showList(){
+        $productRepository= $this->getDoctrine()->getRepository(Product::class);
+        $products = $productRepository->findAll();
+        if(!$products){
+            throw $this->createNotFoundException(
+                'Il n\'y a aucun produit disponnible'
+            );
+        }
+        return $this->render('product/showList.html.twig', [
+            'products'=>$products,
+        ]);
+    }
+
     /**
      * @Route("/product/{id}", name="product_show")
      */
@@ -46,7 +64,7 @@ class ProductController extends AbstractController
         if (!$product) {
             throw $this->createNotFoundException(
                 'Le produit ' . $id . ' n\'existe pas.'
-        );
+            );
         }
 
         dump($product);

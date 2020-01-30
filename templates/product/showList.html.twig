@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1 class="text-center mb-5">Nos produits</h1>
+    <div>
+    <table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">Description</th>
+        <th scope="col">Prix (€)</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for product in products %}
+        <tr>
+            <td>{{product.name}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.price/100}}</td>
+            <td>
+            <a href="{{ path('product_show', { id: product.id }) }}" class="btn btn-warning">
+                Voir le produit
+            </a>
+            </td>
+        </tr>
+        </tbody>
+    {% endfor %}
+{% endblock %}

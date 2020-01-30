@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="card text-center">
+    <div class="card text-center mt-5">
         <div class="card-body">
             <h2 class="card-title">{{ product.name }}</h2>
             <p class="card-text">
                 {{ product.description }}
             </p>
-            <h3 class="card-text">{{ product.price }}€</h3>
-            <a href="#!" class="btn btn-success">Acheter !</a>
+            <h3 class="card-text">{{ product.price /100}}€</h3>
+            <a href="#!" class="btn btn-warning">Acheter !</a>
         </div>
     </div>
 {% endblock %}
