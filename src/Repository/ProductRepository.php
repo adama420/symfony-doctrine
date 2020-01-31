@@ -23,7 +23,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->where('p.price > :price')
-            ->setParameter('price', $price*100)
+            ->setParameter('price', $price)
             ->orderBy('p.price', 'ASC')
             ->setMaxResults(25)
             ->getQuery();
@@ -35,11 +35,21 @@ class ProductRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->where('p.price > :price')
-            ->setParameter('price', $price*100)
+            ->setParameter('price', $price)
             ->orderBy('p.price','DESC')
             ->getQuery();
 
         return $queryBuilder->setMaxResults(1)->getOneOrNullResult();
+    }
+
+    public function findAll()
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->innerJoin('p.user','u')
+            ->addSelect('u')
+            ->getQuery();
+
+        return $queryBuilder->getResult();
     }
 
     // /**

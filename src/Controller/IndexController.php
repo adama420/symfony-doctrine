@@ -15,8 +15,8 @@ class IndexController extends AbstractController
      */
     public function index(ProductRepository $productRepository)
     {
-        $products = $productRepository->findAllGreaterThanPrice(700);
-        $favoriteProduct = $productRepository->findOneGreaterThanPrice(800);
+        $products = $productRepository->findAllGreaterThanPrice(1);
+        $favoriteProduct = $productRepository->findOneGreaterThanPrice(2);
 
         dump($products);
         dump($favoriteProduct);
