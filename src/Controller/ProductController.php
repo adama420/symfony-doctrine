@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
@@ -29,6 +31,7 @@ class ProductController extends AbstractController
             $entityManager->flush();
             //on push l'objet(comme GIt)
             $this->addFlash('success','Le produit a bien été ajouté.');
+            return $this->redirectToRoute('product_list');
         }
 
         return $this->render('product/create.html.twig', [
@@ -54,23 +57,69 @@ class ProductController extends AbstractController
         ]);
     }
 
+
+
     /**
-     * @Route("/product/{id}", name="product_show")
+     * @Route("/product/{slug}", name="product_show")
      */
-    public function show($id){
-        dump($id);
-        $productRepository= $this->getDoctrine()->getRepository(Product::class);
-        $product = $productRepository->find($id);
+    public function show($slug)
+    {
+        // On récupère le dépôt qui contient nos produits
+        $productRepository = $this->getDoctrine()->getRepository(Product::class);
+        // SELECT * FROM product WHERE id = $slug
+        $product = $productRepository->findOneBy(array('slug' => $slug));
+            dump($product);
+            dump($slug);
+        // Si le produit n'existe pas en BDD
         if (!$product) {
-            throw $this->createNotFoundException(
-                'Le produit ' . $id . ' n\'existe pas.'
-            );
+            throw $this->createNotFoundException('Le produit n\'existe pas.');
         }
 
-        dump($product);
-
         return $this->render('product/show.html.twig', [
-            'product'=>$product,
+            'product' => $product,
         ]);
     }
+
+    /**
+     * @Route("/product/edit/{id}", name="product_edit")
+     */
+    public function editProduct(Request $request, $id){
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $product = $entityManager->getRepository(Product::class)->find($id);
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            return $this->redirectToRoute('product_list');
+        }
+
+        return $this->render('product/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+
+
+    }
+
+
+    /**
+     * @Route("/product/del/{id}", name="product_del", methods={"POST"})
+     */
+    public function deleteProduct(Request $request, Product $product, EntityManagerInterface $entityManager)
+    {
+        // On vérifie la validité du token CSRF
+        // On se protège d'une faille CSRF
+        if ($this->isCsrfTokenValid('delete', $request->get('token'))) {
+            $entityManager->remove($product);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('product_list');
+}
+
+
+
 }

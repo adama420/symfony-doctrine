@@ -6,17 +6,19 @@
     <div class="text-center">
         <div class="row mt-5">
             <div class="col-6">
-                <h1>BONJOUR TOTO !</h1>
-                <h1>BONJOUR TOTO !</h1>
-                <h1>BONJOUR TOTO !</h1>
-                <h1>BONJOUR TOTO !</h1>
-                <h1>BONJOUR TOTO !</h1>
-                <h1>BONJOUR TOTO !</h1>
-                <h1>BONJOUR TOTO !</h1>
-                <h1>BONJOUR TOTO !</h1>
+                <h2 style="color: #F5871F"> Notre produit Star !</h2>
+                <div class="card">
+                    <h3 class="card-body">{{ favorite_product.name }}</h3>
+                    <h4 class="card-body">{{ favorite_product.description }}</h4>
+                    <h5 class="card-body">{{ favorite_product.price/100}} €</h5>
+                    <a href="{{ path('product_show', { slug: favorite_product.slug }) }}" class="btn btn-warning">Voir le produit</a>
+                </div>
             </div>
+
             <div class="col-6">
                 <img src="https://vignette.wikia.nocookie.net/p__/images/c/cb/SpongeBob_SquarePants_Render.png/revision/latest?cb=20190120193322&path-prefix=protagonist">
             </div>
+
         </div>
+    </div>
 {% endblock %}

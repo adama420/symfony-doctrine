@@ -2,7 +2,7 @@
 {% block body %}
     <h1 class="text-center mb-5">Nos produits</h1>
     <div>
-    <table class="table">
+    <table class="table text-center">
     <thead class="thead-dark">
     <tr>
         <th scope="col">Nom</th>
@@ -16,11 +16,18 @@
         <tr>
             <td>{{product.name}}</td>
             <td>{{product.description}}</td>
-            <td>{{product.price/100}}</td>
+            <td>{{product.price}}</td>
             <td>
-            <a href="{{ path('product_show', { id: product.id }) }}" class="btn btn-warning">
-                Voir le produit
-            </a>
+            <a href="{{ path('product_show', { slug: product.slug }) }}" class="btn btn-warning">Voir le produit</a>
+
+            <a href="{{ path('product_edit', { id: product.id }) }}"><i class="fa-edit fa text-success" ></i></a>
+            <form action="{{ path('product_del', { id: product.id }) }}" method="post" class="d-inline">
+                <input type="hidden" name="token" value="{{ csrf_token('delete') }}">
+
+                <button>
+                    <i class="fa-trash fa text-danger"></i>
+                </button>
+            </form>
             </td>
         </tr>
         </tbody>

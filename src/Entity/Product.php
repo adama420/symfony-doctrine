@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -37,6 +39,20 @@ class Product
      * @ORM\Column(type="integer")
      */
     private $price;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+
+
 
     public function getId(): ?int
     {
@@ -78,4 +94,47 @@ class Product
 
         return $this;
     }
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     *
+     */
+
+    public function initializeSlug()
+    {
+        if(empty($this->slug)){
+            $slug = new Slugify();
+            $this->slug = $slug->slugify($this->name);
+        }
+
+
+    }
+
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function getUser(): ?user
+    {
+        return $this->user;
+    }
+
+    public function setUser(?user $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    
+
 }

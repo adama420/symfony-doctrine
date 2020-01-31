@@ -15,6 +15,7 @@ class ProductType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
+            ->add('slug')
             ->add('price', MoneyType::class, [
                 'divisor' => 100,
             ])
