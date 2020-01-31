@@ -51,6 +51,15 @@ class Product
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="product_id")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+
+
+
 
 
 
@@ -131,6 +140,19 @@ class Product
     public function setUser(?user $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Category;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -24,6 +25,9 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
+
+
+
         //on créé les users
         $users = [];
         for($i = 1; $i <= 10; $i++){
@@ -31,6 +35,15 @@ class AppFixtures extends Fixture
             $user->setUsername($faker->lastName);
             $manager->persist($user);
             $users[]= $user;
+        }
+        $categorys = [];
+        for($i = 1; $i <= 5; $i++){
+            $category = new Category();
+            $category->setName($faker->jobTitle);
+            $category->setDescription($faker->sentence(10,true));
+            $category->setSlug($faker->slug(3,true));
+            $manager->persist($category);
+            $categorys[] = $category;
         }
         //on créé les produits
         for($i = 1; $i<=100; $i++){
@@ -40,6 +53,7 @@ class AppFixtures extends Fixture
             $product->setPrice($faker->randomDigitNotNull);
             $product->setSlug($this->slugger->slug($product->getName())->lower());
             $product->setUser($users[rand(0, 9)]);
+            $product->setCategory($categorys[rand(0,4)]);
             $manager->persist($product);
         }
 
