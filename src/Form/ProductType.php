@@ -19,6 +19,12 @@ class ProductType extends AbstractType
             ->add('price', MoneyType::class, [
                 'divisor' => 100,
             ])
+            ->add('category')
+            ->add('user')
+            ->add('tags',null,[
+                'choice_label' => 'name',
+                'expanded' => true,
+            ])
         ;
     }
 
