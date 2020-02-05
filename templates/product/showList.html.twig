@@ -23,7 +23,7 @@
             </a> </td>
             <td>
             <a href="{{ path('product_show', { slug: product.slug }) }}" class="btn btn-warning">Voir le produit</a>
-
+                {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('product_edit', { id: product.id }) }}"><i class="fa-edit fa text-success" ></i></a>
             <form action="{{ path('product_del', { id: product.id }) }}" method="post" class="d-inline">
                 <input type="hidden" name="token" value="{{ csrf_token('delete') }}">
@@ -31,6 +31,7 @@
                 <button>
                     <i class="fa-trash fa text-danger"></i>
                 </button>
+                {% endif %}
             </form>
             </td>
         </tr>

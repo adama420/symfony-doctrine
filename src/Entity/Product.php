@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Product
 {
@@ -60,7 +61,7 @@ class Product
     private $category;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="products")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="products",cascade={"persist"})
      */
     private $tags;
 
@@ -115,14 +116,14 @@ class Product
 
         return $this;
     }
+
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
-     *
      */
-
     public function initializeSlug()
     {
+        dump($this->slug);
         if(empty($this->slug)){
             $slug = new Slugify();
             $this->slug = $slug->slugify($this->name);

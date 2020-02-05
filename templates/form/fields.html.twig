@@ -13,3 +13,9 @@
         </span>
 {%- endif %}
 {%- endblock form_errors %}
+
+{% block form_help -%}
+    {{- parent() -}}
+    {{- form_errors(form) -}}
+{% endblock %}
+{% block form_label_errors %}{% endblock %}

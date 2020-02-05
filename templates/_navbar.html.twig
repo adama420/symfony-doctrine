@@ -9,9 +9,11 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{{ path('index') }}">Accueil</a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('product_create') }}">Ajouter</a>
             </li>
+            {% endif %}
             <li class="nav-item active">
                 <a class="nav-link" href="{{ path('product_list') }}">Liste Produits</a>
             </li>
@@ -19,9 +21,22 @@
                 <a class="nav-link" href="{{ path('category_index') }}">Liste Catégories</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <ul class="navbar-nav ml-auto">
+            {% if app.user %}
+            <div class="dropdown">
+                <button class="btn-sm btn-success rounded-circle dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Mon compte
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Hello {{app.user.username}} !</a>
+                    <a class="dropdown-item" href="{{ path('logout') }}">Logout</a>
+                </div>
+            </div>
+            {% else %}
+            <li class="nav-item active">
+                <a class="btn-sm btn-success rounded-circle" href="{{ path('login') }}">Login</a>
+            </li>
+            {% endif %}
+        </ul>
     </div>
 </nav>
